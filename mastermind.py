@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Entry point of Codebreaker"""
+from mastermind.player import interactive_player
 
 print('Number of Players? ', end = '')
 number_players = input('')
