@@ -17,17 +17,11 @@ def require(condition):
 
 
 if __name__ == '__main__':
-    parser = ArgumentParser(prog=path.basename(argv[0]), prefix_chars="+-")
-    parser.add_argument('--rounds',
-                        type=int,
-                        default=10,
+    parser = ArgumentParser(prog=path.basename(argv[0]))
+    parser.add_argument('--rounds', type=int, default=10,
                         action=require(lambda i: i % 2 == 0),
                         help='number of rounds (must be even)')
-    parser.add_argument('-i', '--interactive',
-                        action='store_true',
-                        help='human vs. machine (default)')
-    parser.add_argument('+i', '--noninteractive',
-                        dest='interactive',
+    parser.add_argument('--noninteractive',
                         action='store_false',
                         help='machine vs. machine')
     args = parser.parse_args()
