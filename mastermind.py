@@ -20,6 +20,7 @@ if __name__ == '__main__':
     parser = ArgumentParser(prog=path.basename(argv[0]), prefix_chars="+-")
     parser.add_argument('--rounds',
                         type=int,
+                        default=10,
                         action=require(lambda i: i % 2 == 0),
                         help='number of rounds (must be even)')
     parser.add_argument('-i', '--interactive',
@@ -30,9 +31,3 @@ if __name__ == '__main__':
                         action='store_false',
                         help='machine vs. machine')
     args = parser.parse_args()
-    if args.interactive:
-        while getattr(args, 'rounds', 1) % 2:
-            try:
-                args.rounds = int(input('Number of rounds (must be even): '))
-            except ValueError:
-                pass
