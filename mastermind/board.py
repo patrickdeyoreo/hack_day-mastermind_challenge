@@ -2,7 +2,7 @@
 """Definition of the Board class used in the Mastermind project."""
 
 
-class Board(object):
+class Board:
     """Mastermind Board class."""
     def __init__(self, pattern_length, screen_width, turns):
         self.pattern_length = pattern_length
@@ -28,7 +28,7 @@ class Board(object):
 
     def display(self):
         """Display board."""
-        print '\n'.join(self.board) + '\n'
+        print('\n'.join(self.board))
 
     def update(self, turn, guess, feedback):
         """Update board with given guess and feedback at turn."""
