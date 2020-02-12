@@ -1,19 +1,22 @@
 #!/usr/bin/env python3
 """Provides the definition of a Mastermind game """
-from . board import Board
+from mastermind.board import Board
+from mastermind.player import Player, NPC
 
 
-class Game(Board):
+class Game:
     """Definition of a game of Mastermind
     """
-    __rounds = 0
-
-    def __init__(self, rounds=None, rows=None, cols=None):
+    def __init__(self, rounds, rows, cols, player=None):
         """Initialize a game """
-        super().__init__(rows, cols)
-        if rounds is not None:
-            self.rounds = rounds
-        self.__interactive = None
+        self.__board = Board(rows, cols)
+        self.rounds = rounds
+        if player is None:
+            self.__player = NPC()
+        elif not isinstance(player, Player):
+            raise TypeError("'player' is not an instance of 'Player'")
+        else:
+            self.__player = player
 
     @property
     def rounds(self):
@@ -25,8 +28,6 @@ class Game(Board):
     def rounds(self, rounds):
         """Set the number of rounds
         """
-        if self.rounds != 0:
-            raise Exception("'rounds' is already set")
         if not isinstance(rounds, int):
             raise TypeError("'rounds' is not of type 'int'")
         if rounds < 1:
@@ -35,42 +36,25 @@ class Game(Board):
             raise ValueError("'rounds' is not an even number")
         self.__rounds = int(rounds)
 
-    @property
-    def interactive(self):
-        """Get the code length
+    def play(self):
+        """Play a series of rounds
         """
-        return self.__interactive
-
-    @interactive.setter
-    def interactive(self, interactive):
-        """Set the number of interactive
-        """
-        if self.interactive != 0:
-            raise Exception("'interactive' is already set")
-        if not isinstance(interactive, bool):
-            raise TypeError("'interactive' is not of type 'bool'")
-        self.__interactive = bool(interactive)
-
-    def play(self, player_cm, player_cb):
-        """Play a series of games
-        """
-        print(self.rounds)
+        player_cm = NPC()
+        player_cb = self.__player
         for round_num in range(self.rounds):
-            player_cm.turn = player_cm.codemaker
-            player_cb.turn = player_cb.codebreaker
-            self.clear()
+            turn_cm = player_cm.codemaker
+            turn_cb = player_cb.codebreaker
+            self.__board.clear()
             print("Round", round_num)
-            player_cm.turn()
-            while len(self.c_pegs) < self.rows:
-                print("Turn", len(self.c_pegs))
-                player_cb.turn()
-                player_cm.turn()
-                print(self)
-                if all(peg == '*' for peg in self.k_pegs[-1]):
+            turn_cm(self.__board)
+            while len(self.__board.cpegs) < self.__board.rows:
+                print("Turn", len(self.__board.cpegs))
+                turn_cb(self.__board)
+                turn_cm(self.__board)
+                print(self.__board)
+                if all(peg == '*' for peg in self.__board.kpegs[-1]):
                     break
                 player_cm.score += 1
             else:
                 player_cm.score += 1
-            print(player_cm.score)
             player_cm, player_cb = player_cb, player_cm
-        return 0

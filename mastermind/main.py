@@ -36,10 +36,11 @@ def main():
                         metavar='ROWS',
                         dest='rows')
     parser.add_argument('--noninteractive',
-                        action='store_false',
+                        action='store_const',
+                        const=NPC(),
+                        default=NPC(),
                         help='machine vs. machine',
-                        dest='interactive')
+                        dest='player')
 
     args = parser.parse_args()
-    game = Game(args.rounds, args.rows, args.cols)
-    return game.play(NPC(game), NPC(game))
+    return Game(args.rounds, args.rows, args.cols, args.player).play()

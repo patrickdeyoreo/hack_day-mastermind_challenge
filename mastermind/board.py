@@ -6,25 +6,18 @@
 class Board:
     """Definition of a Mastermind board
     """
-    def __init__(self, rows=None, cols=None):
+    def __init__(self, rows, cols):
         """Initialize a new board
         """
-        self.__rows = 0
-        if rows is not None:
-            self.rows = rows
-        self.__cols = 0
-        if cols is not None:
-            self.cols = cols
+        self.rows = rows
+        self.cols = cols
         self.clear()
 
     def __str__(self):
         """Get a string representation
         """
-        board = []
-        for c_pegs, k_pegs in zip(self.c_pegs, self.k_pegs):
-            board.append(
-                '[{}] ({})'.format(' '.join(c_pegs), ' '.join(k_pegs))
-            )
+        board = ['[{}] ({})'.format(*map(' '.join, pegs))
+                 for pegs in zip(self.cpegs, self.kpegs)]
         return '\n'.join(board)
 
     @property
@@ -37,8 +30,6 @@ class Board:
     def rows(self, rows):
         """Set the number of rows
         """
-        if self.rows != 0:
-            raise Exception("'rows' is already set")
         if not isinstance(rows, int):
             raise TypeError("'rows' is not of type 'int'")
         if rows < 1:
@@ -55,8 +46,6 @@ class Board:
     def cols(self, cols):
         """Set the number of cols
         """
-        if self.cols != 0:
-            raise Exception("'cols' is already set")
         if not isinstance(cols, int):
             raise TypeError("'cols' is not of type 'int'")
         if cols < 1:
@@ -86,9 +75,9 @@ class Board:
     def clear(self):
         """Clear the board
         """
+        self.cpegs = []
+        self.kpegs = []
         self.__code = None
-        self.c_pegs = []
-        self.k_pegs = []
 
     # def update(self, turn, guess, feedback):
     #     """Update board with given guess and feedback at turn."""

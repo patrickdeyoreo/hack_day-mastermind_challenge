@@ -1,21 +1,16 @@
 #!/usr/bin/env python3
 """Provides a definition of an interactive Mastermind player
 """
-from mastermind.player import player
+from mastermind.player import Player
 
 
-class PC(player.Player):
+class PC(Player):
     """Definition of a Mastermind player abstract base class
     """
-    def __init__(self, board):
-        """Initialize a player
-        """
-        self.__board = board
-
-    def codebreaker(self):
+    def codebreaker(self, board):
         """Take a turn as the codebreaker
         """
 
-    def codemaker(self):
+    def codemaker(self, board):
         """Take a turn as the codemaker
         """
