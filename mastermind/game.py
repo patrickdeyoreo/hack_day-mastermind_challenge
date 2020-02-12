@@ -36,23 +36,27 @@ class Game:
             raise ValueError("'rounds' is not an even number")
         self.__rounds = int(rounds)
 
+    @property
+    def board(self):
+        """Get the board
+        """
+        return self.__board
+
     def play(self):
         """Play a series of rounds
         """
         player_cm = NPC()
         player_cb = self.__player
         for round_num in range(self.rounds):
-            turn_cm = player_cm.codemaker
-            turn_cb = player_cb.codebreaker
-            self.__board.clear()
             print("Round", round_num)
-            turn_cm(self.__board)
-            while len(self.__board.cpegs) < self.__board.rows:
-                print("Turn", len(self.__board.cpegs))
-                turn_cb(self.__board)
-                turn_cm(self.__board)
-                print(self.__board)
-                if all(peg == '*' for peg in self.__board.kpegs[-1]):
+            self.board.clear()
+            player_cm.codemaker(self.board)
+            while len(self.board.cpegs) < self.board.rows:
+                print("Turn", len(self.board.cpegs))
+                player_cb.codebreaker(self.board)
+                player_cm.codemaker(self.board)
+                print(self.board)
+                if all(peg == '*' for peg in self.board.kpegs[-1]):
                     break
                 player_cm.score += 1
             else:
